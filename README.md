@@ -1,29 +1,58 @@
-# Take Home Challenge: AWS AppSync
-This exercise is meant to showcase your technical implementation & design abilities. 
-**It is expected that you will fork this repository in GitHub** and share the link with us 
-when complete. Please be prepared to explain the design.
 
-For the purposes of the exercise, pretend you're on a team working on a new website that 
-customers can use to look up information. Other team members are handling the 
-front end, but you're working on the back-end API.
+# Welcome to your CDK Python project!
 
-## Instructions
+This is a blank project for CDK development with Python.
 
-Implement a fully deployable GraphQL API using *AWS AppSync* can return the Mean, Median and Mode of a 
-series of numbers. The actual logic for calculating these values can be implemented as 
-*AWS Lambda* functions deployed alongside the AppSync API, inline code in VTL mapping 
-templates, or inline code as JavaScript resolvers.
+The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
-Bonus points awarded for the following:
+This project is set up like a standard Python project.  The initialization
+process also creates a virtualenv within this project, stored under the `.venv`
+directory.  To create the virtualenv it assumes that there is a `python3`
+(or `python` for Windows) executable in your path with access to the `venv`
+package. If for any reason the automatic creation of the virtualenv fails,
+you can create the virtualenv manually.
 
-- implementing a solution that leverages an AppSync *Pipeline Resolver* that
-separates the logic for each of the different calculations into *Pipeline Functions*
-- incorporating security for the API to use an API key generated during deployment.
+To manually create a virtualenv on MacOS and Linux:
 
-The GraphQL schema for this API is provided in this repository, as well as the skeleton of the
-*AWS CDK* stack that can be used as the starting point for implementing the deployment portion
-of this challenge.
+```
+$ python3 -m venv .venv
+```
 
-For reference, here is the AWS AppSync Developer Guide: https://docs.aws.amazon.com/appsync/latest/devguide
+After the init process completes and the virtualenv is created, you can use the following
+step to activate your virtualenv.
 
-Please include instructions on how to run, test and deploy your code.
+```
+$ source .venv/bin/activate
+```
+
+If you are a Windows platform, you would activate the virtualenv like this:
+
+```
+% .venv\Scripts\activate.bat
+```
+
+Once the virtualenv is activated, you can install the required dependencies.
+
+```
+$ pip install -r requirements.txt
+```
+
+At this point you can now synthesize the CloudFormation template for this code.
+
+```
+$ cdk synth
+```
+
+To add additional dependencies, for example other CDK libraries, just add
+them to your `setup.py` file and rerun the `pip install -r requirements.txt`
+command.
+
+## Useful commands
+
+ * `cdk ls`          list all stacks in the app
+ * `cdk synth`       emits the synthesized CloudFormation template
+ * `cdk deploy`      deploy this stack to your default AWS account/region
+ * `cdk diff`        compare deployed stack with current state
+ * `cdk docs`        open CDK documentation
+
+Enjoy!
