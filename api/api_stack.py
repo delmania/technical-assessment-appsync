@@ -9,6 +9,7 @@ class ApiStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
+        # Set up the paths to files.
         __directory = path.dirname(path.realpath(__file__))
         SCHEMA_FILE = path.join(__directory,'schema.graphql')
         CALC_MEAN_SOURCE = path.join(__directory, 'calculateMean.js')
@@ -17,6 +18,7 @@ class ApiStack(Stack):
         RESOLVER_BEFORE_SOURCE = path.join(__directory, 'beforeHandler.vtl')
         RESOLVER_AFTER_SOURCE = path.join(__directory, 'afterHandler.vtl')
 
+        # Create the API with no data source since we're not storing anything.
         api = appsync.GraphqlApi(self,
                              'tech-assessment-api',
                              name='Gaggle API',
@@ -25,6 +27,7 @@ class ApiStack(Stack):
                              )
         none_data_source = api.add_none_data_source("NoDataSource")
 
+        # Pipeline functions.
         calculateMeanFunction = appsync.AppsyncFunction(self, 
                                                         'meanFunction',
                                                         name="calculateMean",
@@ -51,6 +54,8 @@ class ApiStack(Stack):
                                                         code=appsync.Code.from_asset(CALC_MODE_SOURCE),
                                                         runtime=appsync.FunctionRuntime.JS_1_0_0
                                                         )
+        # Make the resolver, the path of execution is:
+        # Request template to sort -> calculate mean -> calculate median -> calculate mode -> response template
         query_resolver = appsync.Resolver(self, 'calculatePipeline',
                                           api=api,                                          
                                           field_name="calculate",

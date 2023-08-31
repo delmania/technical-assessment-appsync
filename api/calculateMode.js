@@ -19,7 +19,7 @@ export function request(ctx) {
       }
     });
     
-    // If there's values for the mode, simply return the first one.
+    // If there's multiple values for the mode, simply return the first one.
     const mode = modes[0];
     return { payload: { mode } };
     }

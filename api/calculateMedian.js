@@ -4,7 +4,11 @@
  * @returns {*} the request
  */
 export function request(ctx) {
-    // Update with custom logic or select a code sample.
+    /*
+     * Important: we can't sort here since the AppSync JS runtime doesn't
+     * allow you to specify a sorting function, and will always sort lexicographically
+     * e.g. [10,1,2,] -> [1,10,2].  The input array is assumed to be sorted.
+     */
     const { values } = ctx.stash;    
     const middle = Math.floor(values.length / 2);
 

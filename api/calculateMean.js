@@ -3,8 +3,7 @@
  * @param {import('@aws-appsync/utils').Context} ctx the context
  * @returns {*} the request
  */
-export function request(ctx) {
-    // Update with custom logic or select a code sample.
+export function request(ctx) {    
     const { values } = ctx.stash;
     const sum = values.reduce((acc, num) => acc + num, 0);
     const mean = sum / values.length;
