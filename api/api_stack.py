@@ -2,8 +2,7 @@ from os import path
 import builtins
 import typing
 from constructs import Construct
-from aws_cdk import Environment, IStackSynthesizer, PermissionsBoundary, Stack, aws_appsync as appsync
-
+from aws_cdk import Duration, Expiration, Stack, aws_appsync as appsync
 
 class ApiStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
@@ -23,6 +22,15 @@ class ApiStack(Stack):
                              'tech-assessment-api',
                              name='Gaggle API',
                              schema=appsync.SchemaFile.from_asset(SCHEMA_FILE),
+                             authorization_config = appsync.AuthorizationConfig(
+                                 default_authorization=appsync.AuthorizationMode(                                                          
+                                authorization_type=appsync.AuthorizationType.API_KEY,                                
+                                api_key_config=appsync.ApiKeyConfig(
+                                  description='public key for getting data',
+                                  expires=Expiration.after(Duration.days(30)),
+                                  name='Gaggle API Token')
+                                 )
+                              ),
                              log_config=appsync.LogConfig(field_log_level=appsync.FieldLogLevel.ALL, exclude_verbose_content=False)
                              )
         none_data_source = api.add_none_data_source("NoDataSource")
