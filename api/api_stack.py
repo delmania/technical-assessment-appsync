@@ -2,7 +2,7 @@ from os import path
 import builtins
 import typing
 from constructs import Construct
-from aws_cdk import Duration, Expiration, Stack, aws_appsync as appsync, aws_lambda as lambda_
+from aws_cdk import CfnOutput, Duration, Expiration, Stack, aws_appsync as appsync, aws_lambda as lambda_
 
 class ApiStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
@@ -82,3 +82,7 @@ class ApiStack(Stack):
                                           runtime=appsync.FunctionRuntime.JS_1_0_0,
                                           pipeline_config=[calculateMeanFunction,calculateMedianFunction,calculateModeFunction]                                          
                                           )
+        
+        CfnOutput(self, "GraphQLAPIURL", value=api.graphql_url);
+        CfnOutput(self, "GraphQLAPIKey", value=api.api_key);
+    

@@ -1,58 +1,24 @@
+# Technical Assessment Submission
 
-# Welcome to your CDK Python project!
+This project is a solution for the technical assessment for Gaggle.  The ask was to "Implement a fully deployable GraphQL API using AWS AppSync can return the Mean, Median and Mode of a series of numbers".
 
-This is a blank project for CDK development with Python.
+As such, this follow the schema given, with modifications.  
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+# To Deploy
 
-This project is set up like a standard Python project.  The initialization
-process also creates a virtualenv within this project, stored under the `.venv`
-directory.  To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
+This project is deploy using the AWS CDK tool.  It is a mixed language solution, with the IaaC portion written in Python, and the actual functional requirements written in Javascript.  As such, deploying this requires using the AWS CDK CLI tool and Python library.  Full details can be found in this article:
+* [Working with the AWS CDK in Python|https://docs.aws.amazon.com/cdk/v2/guide/work-with-cdk-python.html]
 
-To manually create a virtualenv on MacOS and Linux:
+Assuming all the requirements have been installed and met, the first thing to do is to use ``aws configure`` to fill in your access key, access secret, and default region.  Once that's done, running ``cdk bootstrap`` and ``cdk deploy`` will deploy the stack to AWS (assuming you have the correct permissions; if not, talk to your AWS administrator.)
 
-```
-$ python3 -m venv .venv
-```
+# Unit Test
 
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
+As mentioned, the functional requirements are implemented in Javascript.  As such, unit tests are implemented using Mocha to test, execute ``npm i`` and ``npm test``.  This assumes you have the latest LTS version of node installed.
 
-```
-$ source .venv/bin/activate
-```
+# Design
 
-If you are a Windows platform, you would activate the virtualenv like this:
+A few words on the design.  The documentation for AppSync mentions that VTL will be retired.  Taking that into account, all resolvers are Javascript.  The actual implementation is a pipeline resolver that executes a series of functions that calculate the mean, the median, and the mode individually.  Of note is the median.  Calculating the median requires the array to be sorted.  The AppSync runtime does not allow you to pass in a function to the sort method, and  so invoking Array.sort will cause the elements to be sort lexicographically; i.e. [1,2,10] -> [1,10,2]. To work around this, the median handler invokes a lambda written in Javascript to perform the calculation.
 
-```
-% .venv\Scripts\activate.bat
-```
+For the mode, if the set is multimodal, it simply returns the first value. 
 
-Once the virtualenv is activated, you can install the required dependencies.
-
-```
-$ pip install -r requirements.txt
-```
-
-At this point you can now synthesize the CloudFormation template for this code.
-
-```
-$ cdk synth
-```
-
-To add additional dependencies, for example other CDK libraries, just add
-them to your `setup.py` file and rerun the `pip install -r requirements.txt`
-command.
-
-## Useful commands
-
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
-
-Enjoy!
+All functions return 0 is the data set is empty. 

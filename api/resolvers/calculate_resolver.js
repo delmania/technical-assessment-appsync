@@ -4,9 +4,9 @@
  * @returns {*} the return value sent to the first AppSync function
  */
 export function request(ctx) {
-    const { values } = ctx.args;
-    ctx.stash.values = values;
-    return {};
+  const { values } = ctx.args;
+  ctx.stash.values = values;
+  return {};
 }
 
 /**
