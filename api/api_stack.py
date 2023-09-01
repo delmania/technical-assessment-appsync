@@ -2,7 +2,7 @@ from os import path
 import builtins
 import typing
 from constructs import Construct
-from aws_cdk import Duration, Expiration, Stack, aws_appsync as appsync
+from aws_cdk import Duration, Expiration, Stack, aws_appsync as appsync, aws_lambda as lambda_
 
 class ApiStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
@@ -11,11 +11,11 @@ class ApiStack(Stack):
         # Set up the paths to files.
         __directory = path.dirname(path.realpath(__file__))
         SCHEMA_FILE = path.join(__directory,'schema.graphql')
-        CALC_MEAN_SOURCE = path.join(__directory, 'calculateMean.js')
-        CALC_MEDIAN_SOURCE = path.join(__directory, 'calculateMedian.js')
-        CALC_MODE_SOURCE = path.join(__directory, 'calculateMode.js')
-        RESOLVER_BEFORE_SOURCE = path.join(__directory, 'beforeHandler.vtl')
-        RESOLVER_AFTER_SOURCE = path.join(__directory, 'afterHandler.vtl')
+        CALC_MEAN_SOURCE = path.join(__directory,'functions', 'calculateMean.js')
+        CALC_MEDIAN_SOURCE = path.join(__directory, 'functions','calculateMedian.js')
+        CALC_MODE_SOURCE = path.join(__directory, 'functions','calculateMode.js')
+        MEDIAN_LAMBDA_SOURCE = path.join(__directory,'calculate_median_lambda')
+        QUERY_RESOLVER = path.join(__directory, 'resolvers', 'calculate_resolver.js')        
 
         # Create the API with no data source since we're not storing anything.
         api = appsync.GraphqlApi(self,
@@ -33,7 +33,17 @@ class ApiStack(Stack):
                               ),
                              log_config=appsync.LogConfig(field_log_level=appsync.FieldLogLevel.ALL, exclude_verbose_content=False)
                              )
+        
+        medianLambda = lambda_.Function(self, 
+                                        'calculateMedianLambda',
+                                        runtime=lambda_.Runtime.NODEJS_18_X,
+                                        handler='main.handler',
+                                        code=lambda_.Code.from_asset(MEDIAN_LAMBDA_SOURCE)
+                                        )
         none_data_source = api.add_none_data_source("NoDataSource")
+        lambda_data_source = api.add_lambda_data_source('CalculateMedianLambda',
+                                                        lambda_function=medianLambda,
+                                                        description="The lambda to calculate the median")
 
         # Pipeline functions.
         calculateMeanFunction = appsync.AppsyncFunction(self, 
@@ -49,7 +59,7 @@ class ApiStack(Stack):
                                                           'medianFunction',
                                                         name ="calculateMedian",
                                                         api=api,
-                                                        data_source=none_data_source,
+                                                        data_source=lambda_data_source,
                                                         code=appsync.Code.from_asset(CALC_MEDIAN_SOURCE),
                                                         runtime=appsync.FunctionRuntime.JS_1_0_0
                                                         )
@@ -68,7 +78,7 @@ class ApiStack(Stack):
                                           api=api,                                          
                                           field_name="calculate",
                                           type_name="Query",
-                                          request_mapping_template=appsync.MappingTemplate.from_file(RESOLVER_BEFORE_SOURCE),                                          
-                                          pipeline_config=[calculateMeanFunction,calculateMedianFunction,calculateModeFunction],
-                                          response_mapping_template=appsync.MappingTemplate.from_file(RESOLVER_AFTER_SOURCE)
+                                          code=appsync.Code.from_asset(QUERY_RESOLVER),
+                                          runtime=appsync.FunctionRuntime.JS_1_0_0,
+                                          pipeline_config=[calculateMeanFunction,calculateMedianFunction,calculateModeFunction]                                          
                                           )
