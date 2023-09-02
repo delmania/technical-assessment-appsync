@@ -1,7 +1,7 @@
 /**
- * Sends a request to the attached data source
+ * Calculates the median by invoking the median lambda
  * @param {import('@aws-appsync/utils').Context} ctx the context
- * @returns {*} the request
+ * @returns {*} the median
  */
 export function request(ctx) {
   // Update with custom logic or select a code sample.

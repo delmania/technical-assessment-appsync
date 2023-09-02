@@ -1,7 +1,7 @@
 /**
- * Sends a request to the attached data source
+ * Calculates the mean.
  * @param {import('@aws-appsync/utils').Context} ctx the context
- * @returns {*} the request
+ * @returns {*} The mean
  */
 export function request(ctx) {
   const { values } = ctx.stash;

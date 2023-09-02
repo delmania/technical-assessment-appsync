@@ -1,4 +1,4 @@
-import { request } from "../api/functions/calculateMode.js";
+import { request, response } from "../api/functions/calculateMode.js";
 import assert from "assert";
 
 describe("Calculations", function () {
@@ -53,6 +53,28 @@ describe("Calculations", function () {
     const ctx = { stash: { values: values } };
     const result = request(ctx);
     const { mode } = result.payload;
+    assert.equal(mode, expectedMode);
+  });
+
+  it("Should transform the response", function () {
+    const expectedMean = 1;
+    const expectedMedian = 2;
+    const expectedMode = 3;
+    const ctx = {
+      result: {
+        mode: expectedMode,
+      },
+      prev: {
+        result: {
+          mean: expectedMean,
+          median: expectedMedian,
+        },
+      },
+    };
+    const result = response(ctx);
+    var { mean, median, mode } = result;
+    assert.equal(mean, expectedMean);
+    assert.equal(median, expectedMedian);
     assert.equal(mode, expectedMode);
   });
 });
