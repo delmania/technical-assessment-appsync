@@ -1,5 +1,6 @@
 /**
- * Starts the resolver execution
+ * Starts the resolver execution; store the numbers list in the stash for access by 
+ * the later functions
  * @param {import('@aws-appsync/utils').Context} ctx the context
  * @returns {*} the return value sent to the first AppSync function
  */
