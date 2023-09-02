@@ -47,7 +47,7 @@ describe("Calculations", function () {
     assert.equal(mode, expectedMode);
   });
 
-  it("Should handle an calculate the mode from an unsorted array", function () {
+  it("Should return the first value in a multimodal array", function () {
     const expectedMode = 2;
     const values = [2, 5, 6, 7, 1, 3, 2, 1];
     const ctx = { stash: { values: values } };
