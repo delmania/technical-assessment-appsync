@@ -3,13 +3,21 @@ import { response } from "../api/functions/calculateMedian.js";
 import assert from "assert";
 
 describe("Calculations", function () {
-  it("Should calculate the median", async function () {
+  it("Should pick the middle element in an odd length array", async function () {
     const expectedMedian = 4;
     const values = [2, 4, 5, 7, 1, 8, 1];
     const event = { values: values };
     const median = await handler(event);
     assert.equal(median, expectedMedian);
   });
+  
+ it("Should average the two middle elements in an even length array.", async function () {
+      const expectedMedian = 4.5;
+      const values = [5, 6, 1, 2, 10, 8, 3, 4];
+      const event = { values: values };
+      const median = await handler(event);
+      assert.equal(median, expectedMedian);
+    });
 
   it("Should handle a single element", async function () {
     const expectedMedian = 1;
