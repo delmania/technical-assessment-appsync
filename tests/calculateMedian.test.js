@@ -10,14 +10,30 @@ describe("Calculations", function () {
     const median = await handler(event);
     assert.equal(median, expectedMedian);
   });
-  
- it("Should average the two middle elements in an even length array.", async function () {
-      const expectedMedian = 4.5;
-      const values = [5, 6, 1, 2, 10, 8, 3, 4];
-      const event = { values: values };
-      const median = await handler(event);
-      assert.equal(median, expectedMedian);
-    });
+
+  it("Should pick the middle element in an odd length array", async function () {
+    const expectedMedian = 4;
+    const values = [4, 1, 2, 3, 5, 6, 7];
+    const event = { values: values };
+    const median = await handler(event);
+    assert.equal(median, expectedMedian);
+  });
+
+  it("Should average the two middle elements in an even length array.", async function () {
+    const expectedMedian = 4.5;
+    const values = [5, 6, 1, 2, 10, 8, 3, 4];
+    const event = { values: values };
+    const median = await handler(event);
+    assert.equal(median, expectedMedian);
+  });
+
+  it("Should average the two middle elements in an even length array.", async function () {
+    const expectedMedian = 5.5;
+    const values = [5, 1, 2, 3, 4, 7, 8, 9, 10, 6];
+    const event = { values: values };
+    const median = await handler(event);
+    assert.equal(median, expectedMedian);
+  });
 
   it("Should handle a single element", async function () {
     const expectedMedian = 1;
