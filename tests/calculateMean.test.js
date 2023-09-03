@@ -10,6 +10,14 @@ describe("Calculations", function () {
     assert.equal(mean, expectedMean);
   });
 
+  it("Should calculate the mean", function () {
+    const expectedMean = 5.5;
+    const ctx = { stash: { values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] } };
+    const result = request(ctx);
+    const { mean } = result.payload;
+    assert.equal(mean, expectedMean);
+  });
+
   it("Should handle a single element", function () {
     const expectedMean = 1;
     const ctx = { stash: { values: [1] } };
