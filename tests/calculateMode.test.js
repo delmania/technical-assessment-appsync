@@ -66,6 +66,15 @@ describe("Calculations", function () {
   });
 
   it("Should return the mode", function () {
+    const expectedMode = 1;
+    const values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1];
+    const ctx = { stash: { values: values } };
+    const result = request(ctx);
+    const { mode } = result.payload;
+    assert.equal(mode, expectedMode);
+  });
+
+  it("Should return the mode", function () {
     const expectedMode = 10;
     const values = [10, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     const ctx = { stash: { values: values } };
