@@ -56,6 +56,34 @@ describe("Calculations", function () {
     assert.equal(mode, expectedMode);
   });
 
+  it("Should return the first value in a multimodal array", function () {
+    const expectedMode = 1;
+    const values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const ctx = { stash: { values: values } };
+    const result = request(ctx);
+    const { mode } = result.payload;
+    assert.equal(mode, expectedMode);
+  });
+
+  it("Should return the mode", function () {
+    const expectedMode = 10;
+    const values = [10, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const ctx = { stash: { values: values } };
+    const result = request(ctx);
+    const { mode } = result.payload;
+    assert.equal(mode, expectedMode);
+  });
+
+  it("Should return the mode", function () {
+    const expectedMode = 10;
+    const values = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+    const ctx = { stash: { values: values } };
+    const result = request(ctx);
+    const { mode } = result.payload;
+    assert.equal(mode, expectedMode);
+  });
+
+
   it("Should transform the response", function () {
     const expectedMean = 1;
     const expectedMedian = 2;
