@@ -1,6 +1,6 @@
 /**
- * Calculates the mean.
- * @param {import('@aws-appsync/utils').Context} ctx the context
+ * Calculates the mean of a list of numbers.
+ * @param {import('@aws-appsync/utils').Context} ctx the context, where the list is in the stash.
  * @returns {*} The mean
  */
 export function request(ctx) {
@@ -14,11 +14,12 @@ export function request(ctx) {
 }
 
 /**
- * Returns the resolver result
+ * Returns the resolver result.  
  * @param {import('@aws-appsync/utils').Context} ctx the context
  * @returns {*} the result
  */
 export function response(ctx) {
-  // Update with response logic
+  // No modification needed, and the result from the request is 
+  // mapped to mean by the runtime.
   return ctx.result;
 }

@@ -1,5 +1,5 @@
 /**
- * Calculates the mode. If the set if multimodal, the first value is returned.
+ * Calculates the mode of a list of numbers.
  * @param {import('@aws-appsync/utils').Context} ctx the context
  * @returns {*} the  mode
  */
@@ -34,6 +34,8 @@ export function request(ctx) {
  * @returns {*} the result
  */
 export function response(ctx) {
+  // Similar to the mean and median functions, we need to retrieve the previous
+  // results and store them into the results. 
   const { mean, median } = ctx.prev.result;
   ctx.result.mean = mean;
   ctx.result.median = median;

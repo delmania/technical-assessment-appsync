@@ -1,3 +1,8 @@
+/*/
+* Calculate the median of an array of numbers.
+* @params: event The standard input object to a lambda.  The array is in the
+* values object. 
+*/
 export const handler = async (event) => {
   const { values } = event;
 
